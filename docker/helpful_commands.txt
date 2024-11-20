@@ -1,0 +1,4 @@
+docker start photo_duplication_remover_container
+docker exec -it photo_duplication_remover_container bash
+docker stop photo_duplication_remover_container
+docker rm photo_duplication_remover_container
