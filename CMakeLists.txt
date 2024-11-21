@@ -3,7 +3,7 @@ project(photo_duplication_remover)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(main_duplication_remover main.cpp)
+add_executable(main_duplication_remover src/main.cpp)
 
 #GTEST START
 include(FetchContent)
@@ -17,7 +17,13 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-add_executable(test_duplication_remover test.cpp)
+add_executable(test_duplication_remover tests/test.cpp)
+
+target_include_directories(
+        test_duplication_remover
+        PRIVATE
+        include
+        )
 
 target_link_libraries(
         test_duplication_remover
