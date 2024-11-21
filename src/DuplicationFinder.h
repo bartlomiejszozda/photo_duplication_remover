@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
+#include <filesystem>
 
 class DuplicationFinder{
 public:
-    std::vector<int> listAllFiles();
+    std::vector<std::filesystem::path> listAllFiles();
 };
