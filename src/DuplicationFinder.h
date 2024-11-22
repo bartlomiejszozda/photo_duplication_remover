@@ -2,7 +2,9 @@
 #include <vector>
 #include <filesystem>
 
+#include "DuplicatedFiles.h"
+
 class DuplicationFinder{
 public:
-    std::vector<std::filesystem::path> listAllFiles();
+    [[nodiscard]] static DuplicatedFiles findDuplications(const std::filesystem::path& dirToSearch);
 };

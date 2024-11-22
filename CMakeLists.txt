@@ -6,6 +6,10 @@ set(CMAKE_CXX_STANDARD 23)
 add_library(
 sources
 src/DuplicationFinder.cpp
+src/DuplicatedFile.cpp
+src/DuplicatedFile.h
+src/DuplicatedFiles.cpp
+src/DuplicatedFiles.h
 )
 
 target_include_directories(

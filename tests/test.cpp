@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include "DuplicationFinder.h"
 
-TEST(Test, listAllFiles){
-    auto duplication_finder = DuplicationFinder{};
-    const auto& files = duplication_finder.listAllFiles();
-    EXPECT_EQ(5, files.size());
+TEST(Test, getUniqueFiles){
+    std::filesystem::path dirToSearchPath = "../test_data";
+    const auto& uniqueFiles = DuplicationFinder::findDuplications(dirToSearchPath);
+    EXPECT_EQ(6, uniqueFiles.size());
 }
