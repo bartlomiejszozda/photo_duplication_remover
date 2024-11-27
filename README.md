@@ -11,7 +11,7 @@ run tests
 
 TODO:
 - tests for DuplicatedFile and DuplicatedFiles
-- use std::range in findDuplications if possible
+- use std::range in findUniqueFiles if possible
 - add more keys (other than FileNameSize, use they as templates params and use concepts
 - multiple dirs
 - photos only

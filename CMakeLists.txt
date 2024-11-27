@@ -7,9 +7,8 @@ add_library(
 sources
 src/DuplicationFinder.cpp
 src/DuplicatedFile.cpp
-src/DuplicatedFile.h
-src/DuplicatedFiles.cpp
 src/DuplicatedFiles.h
+src/Differentiators.h
 )
 
 target_include_directories(

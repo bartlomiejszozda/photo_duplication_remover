@@ -1,35 +1,38 @@
 #include <filesystem>
-
 #include <unordered_map>
 
-#include "DuplicatedFile.h"
+#include <DuplicatedFile.h>
+#include <ranges>
 
-struct FileNameSize {
-    explicit FileNameSize(const std::filesystem::path& path):
-                     name(path.filename()), size(std::filesystem::file_size(path)){}
-    bool operator==(const FileNameSize & other) const{
-        return name == other.name && size == other.size;
-    }
-    const std::string name;
-    const uint32_t size; // may not work with files bigger than ~4GB
+template<typename T>
+concept Hashable = requires(T a)
+{
+    { std::hash<T>{}(a) } -> std::convertible_to<std::size_t>;
 };
 
-namespace std {
-    template <>
-    struct hash<FileNameSize> {
-        std::size_t operator()(const FileNameSize & obj) const {
-            std::size_t hash1 = std::hash<std::string>{}(obj.name);
-            std::size_t hash2 = std::hash<uint32_t>{}(obj.size);
-            return hash1 ^ (hash2 << 1);  // Shift and XOR to combine
-        }
-    };
-}
+template <typename T>
+concept ConstructibleFromPath = std::is_constructible_v<T, std::filesystem::path>;
 
+template <typename T>
+concept Comparable = requires(T a, T b){
+    {a == b} -> std::convertible_to<bool>;
+};
+
+template <typename Differentiator>
+requires Hashable<Differentiator> && ConstructibleFromPath<Differentiator> && Comparable<Differentiator>
 class DuplicatedFiles {
 public:
-    void newPath(const std::filesystem::path& path);
-    [[nodiscard]] size_t size() const;
+    void newPath(const std::filesystem::path& path){
+        try{
+            duplicatedFiles.at(Differentiator{path}).addDuplication(path);
+        }
+        catch(const std::out_of_range& e){
+            duplicatedFiles.insert({Differentiator{path}, DuplicatedFile{path}});
+        }
+    }
+    [[nodiscard]] size_t size() const{
+        return duplicatedFiles.size();
+    }
 private:
-    std::unordered_map<FileNameSize, DuplicatedFile> duplicatedFiles;
-
+    std::unordered_map<Differentiator, DuplicatedFile> duplicatedFiles;
 };
