@@ -1,19 +1,11 @@
 #include <gtest/gtest.h>
 
 #include "DuplicationFinder.h"
-#include "Differentiators.h"
 
 TEST(Test, getUniqueFilesBasedOnNameAndSize){
     std::filesystem::path dirToSearchPath = "../test_data";
 
-    const auto& uniqueFiles = DuplicationFinder::findUniqueFiles<FileNameSize>(dirToSearchPath);
-    EXPECT_EQ(6, uniqueFiles.size());
-}
-
-TEST(Test, getUniqueFilesBasedOnHash){
-    std::filesystem::path dirToSearchPath = "../test_data";
-
-    const auto& uniqueFiles = DuplicationFinder::findUniqueFiles<FileRawDataHash>(dirToSearchPath);
+    const auto& uniqueFiles = DuplicationFinder::findUniqueFiles(dirToSearchPath);
     EXPECT_EQ(6, uniqueFiles.size());
 }
 

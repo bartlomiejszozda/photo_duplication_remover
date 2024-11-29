@@ -10,9 +10,10 @@ run tests
 
 
 TODO:
+- find duplications using multithreading
 - tests for DuplicatedFile and DuplicatedFiles
 - use std::range in findUniqueFiles if possible
-- add more keys (other than FileNameSize, use they as templates params and use concepts
+- add more keys (other than SoftDifferentiator, use they as templates params and use concepts
 - multiple dirs
 - photos only
 - find duplications by name

@@ -1,9 +1,14 @@
 #include <filesystem>
 #include <unordered_map>
-
-#include <DuplicatedFile.h>
+#include <unordered_set>
+#include <map>
 #include <ranges>
 
+#include <DuplicatedFile.h>
+#include <Differentiators.h>
+#include <helpers.h>
+
+/*
 template<typename T>
 concept Hashable = requires(T a)
 {
@@ -18,21 +23,40 @@ concept Comparable = requires(T a, T b){
     {a == b} -> std::convertible_to<bool>;
 };
 
-template <typename Differentiator>
-requires Hashable<Differentiator> && ConstructibleFromPath<Differentiator> && Comparable<Differentiator>
+template <typename SoftDifferentiator>
+requires Hashable<SoftDifferentiator> && ConstructibleFromPath<SoftDifferentiator> && Comparable<SoftDifferentiator>
+        */
+
 class DuplicatedFiles {
 public:
     void newPath(const std::filesystem::path& path){
-        try{
-            duplicatedFiles.at(Differentiator{path}).addDuplication(path);
+        if(isNotADuplication(path)){
+            differentFiles.insert(InitialDifferentiator{path});
         }
-        catch(const std::out_of_range& e){
-            duplicatedFiles.insert({Differentiator{path}, DuplicatedFile{path}});
+        else{
+            checkForDuplicationByHash(path);
         }
     }
+
+    bool isNotADuplication(const std::filesystem::path& path){
+        auto search = differentFiles.find(InitialDifferentiator{path});
+        return search == differentFiles.end();
+    }
+    void checkForDuplicationByHash(const std::filesystem::path& path){
+        std::size_t hash = hashRawBytes(path);
+        auto sameFile = duplicatedFiles.find(hash);
+        if (sameFile == duplicatedFiles.end()){
+            duplicatedFiles.insert({hash, {path}});
+        }
+        else{
+            sameFile->second.emplace_back(path);
+        }
+    }
+
     [[nodiscard]] size_t size() const{
-        return duplicatedFiles.size();
+        return differentFiles.size();
     }
 private:
-    std::unordered_map<Differentiator, DuplicatedFile> duplicatedFiles;
+    std::unordered_set<InitialDifferentiator> differentFiles;
+    std::unordered_map<std::size_t, std::vector<std::filesystem::path>> duplicatedFiles;
 };

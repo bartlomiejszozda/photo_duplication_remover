@@ -21,9 +21,8 @@ void forEveryFileInPathDo(const std::filesystem::path& dirToSearch, auto doForFi
 
 class DuplicationFinder{
 public:
-    template <typename Differentiator>
-    [[nodiscard]] static DuplicatedFiles<Differentiator> findUniqueFiles(const std::filesystem::path& dirToSearch){
-        DuplicatedFiles<Differentiator> files;
+    [[nodiscard]] static DuplicatedFiles findUniqueFiles(const std::filesystem::path& dirToSearch){
+        DuplicatedFiles files;
         auto addFile = [&](const auto& entry){
           files.newPath(entry.path());
         };

@@ -9,6 +9,7 @@ src/DuplicationFinder.cpp
 src/DuplicatedFile.cpp
 src/DuplicatedFiles.h
 src/Differentiators.h
+src/helpers.cpp
 )
 
 target_include_directories(
