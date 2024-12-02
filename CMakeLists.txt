@@ -5,11 +5,9 @@ set(CMAKE_CXX_STANDARD 23)
 
 add_library(
 sources
-src/DuplicationFinder.cpp
-src/DuplicatedFile.cpp
-src/DuplicatedFiles.h
-src/Differentiators.h
 src/helpers.cpp
+src/Differentiators.cpp
+src/DuplicationCandidatesFinder.h
 )
 
 target_include_directories(
@@ -37,7 +35,7 @@ enable_testing()
 
 add_executable(test_duplication_remover
 tests/test.cpp
-src/DuplicationFinder.cpp)
+)
 
 target_link_libraries(
         test_duplication_remover
