@@ -14,10 +14,15 @@ std::size_t hashRawBytes(const std::filesystem::path& path){
 }
 
 void forEveryFileInPathDo(const std::filesystem::path &dirToSearch, std::function<void(std::filesystem::directory_entry)> doForFile) {
+    long unsigned checked = 0;
     namespace fs = std::filesystem;
     try{
         for (const fs::directory_entry& entry : fs::recursive_directory_iterator(dirToSearch)){
             if (fs::is_regular_file(entry) && fs::exists(entry.path())){
+                ++checked;
+                if (checked % 100 == 0){
+                    std::cout << "Checked files: " << checked << "\n";
+                }
                 doForFile(entry);
             }
         }

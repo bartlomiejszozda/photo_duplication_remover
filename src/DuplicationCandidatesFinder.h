@@ -3,6 +3,7 @@
 #include <unordered_set>
 #include <map>
 #include <ranges>
+#include <iostream>
 
 #include <helpers.h>
 
@@ -42,17 +43,20 @@ private:
     template<typename Differentiator>
     [[nodiscard]] std::vector<SimilarFiles> findSimilarFiles() const {
         auto filter = [](const SimilarFiles& similarFiles){
+          long unsigned checked = 0;
           std::unordered_map<Differentiator, SimilarFiles> groupsOfSimilarFiles;
           for (auto& path: similarFiles) {
               Differentiator differentiator{path};
               auto search = groupsOfSimilarFiles.find(differentiator);
               if(search != groupsOfSimilarFiles.end()){
+                  ++checked;
                   search->second.emplace_back(std::move(path));
               }
               else{
                   groupsOfSimilarFiles.emplace(std::move(differentiator), SimilarFiles{std::move(path)});
               }
           }
+          std::cout << "Filtered files: " << checked << std::endl;
           return groupsOfSimilarFiles;
         };
         std::vector<SimilarFiles> tmp;

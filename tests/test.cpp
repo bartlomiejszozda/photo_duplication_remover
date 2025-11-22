@@ -12,6 +12,7 @@ void printVecVec(std::vector<std::vector<T>> vec){
         std::cout << std::endl;
     }
 }
+
 TEST(Test, getUniqueFilesBasedOnNameAndSizeAndHash){
     std::filesystem::path dirToSearchPath = "../test_data";
 
